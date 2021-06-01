@@ -5,8 +5,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('blog_app.urls'))
-    #when creating rest apis the trailing only works for GET requests.
+    path('', include('blog_app.urls')),
+
+    # REST FRAMEWORK URLS
+    path('api/', include('blog_app.api.urls'))
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
