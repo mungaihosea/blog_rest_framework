@@ -8,16 +8,12 @@ from django.contrib.auth.models import User
 @api_view(['GET'])
 def api_detail_view(request, slug):
     try:
-        print(Post.objects.values('id'))
         blog_post = Post.objects.get(id = slug)
+
     except Post.DoesNotExist:
         data = {}
-        data['error'] = "some error occured"
-        return Response(data = data, status = status.HTTP_400_BAD_REQUEST)
-    print(blog_post)
-    if request.method == 'GET':
-        serializer = PostSerializer(blog_post)
-        return Response(data = serializer.data)
+        data['error'] = "an error occured"
+    return Response(data = data, status = status.HTTP_400_BAD_REQUEST)
     
 
 @api_view(['DELETE'])
@@ -39,7 +35,7 @@ def api_delete_view(request, slug):
             return Response(data = data, status = status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
-def api_update_view(request, slug):
+def api_edit_request(request, slug):
     try:
         blog_post = Post.objects.get(id = slug)
     except Post.DoesNotExist:
@@ -64,7 +60,6 @@ def api_post_view(request):
     serializer = PostSerializer(blog_post, request.data)
     data = {}
     if serializer.is_valid():
-        serializer.save()
         data['success'] = 'Blog post created successfully'
         return Response(data = data)
     else:
